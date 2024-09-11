@@ -15,24 +15,24 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SimHash.h">
+    <ClInclude Include="simhash.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Plagiarism_check.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
+    <ClInclude Include="plagiarism_check.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="cppjieba-master\include\cppjieba\Jieba.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="resource1.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="simhash.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="plagiarism_check.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

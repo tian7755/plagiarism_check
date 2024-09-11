@@ -149,13 +149,13 @@
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
     </ClInclude>
-    <ClInclude Include="Plagiarism_check.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="resource1.h" />
-    <ClInclude Include="SimHash.h" />
+    <ClInclude Include="plagiarism_check.h" />
+    <ClInclude Include="simhash.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="plagiarism_check.cpp" />
+    <ClCompile Include="simhash.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cppjieba-master\dict\hmm_model.utf8" />
