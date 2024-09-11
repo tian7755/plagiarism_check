@@ -1,0 +1,59 @@
+2024-09-11 16:42:13
+ 两论文的查重率：1.00
+文1文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig.txt 文2文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig_0.8_add.txt
+
+2024-09-11 16:42:44
+ 两论文的查重率：0.97
+文1文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig.txt 文2文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig_0.8_del.txt
+
+2024-09-11 16:43:03
+ 两论文的查重率：1.00
+文1文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig.txt 文2文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig_0.8_dis_1.txt
+
+2024-09-11 16:43:22
+ 两论文的查重率：1.00
+文1文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig.txt 文2文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig_0.8_dis_10.txt
+
+2024-09-11 16:43:42
+ 两论文的查重率：0.98
+文1文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig.txt 文2文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig_0.8_dis_15.txt
+
+2024-09-11 17:06:50
+ 两论文的查重率：0.99
+文1文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig.txt 文2文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig_0.8_add.txt
+
+2024-09-11 17:07:03
+ 两论文的查重率：0.99
+文1文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig.txt 文2文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig_0.8_del.txt
+
+2024-09-11 17:07:14
+ 两论文的查重率：0.99
+文1文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig.txt 文2文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig_0.8_dis_1.txt
+
+2024-09-11 17:07:23
+ 两论文的查重率：0.99
+文1文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig.txt 文2文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig_0.8_dis_10.txt
+
+2024-09-11 17:07:39
+ 两论文的查重率：1.00
+文1文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig.txt 文2文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig_0.8_dis_15.txt
+
+2024-09-11 17:12:55
+ 两论文的查重率：0.98
+文1文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig.txt 文2文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig_0.8_dis_15.txt
+
+2024-09-11 17:13:13
+ 两论文的查重率：1.00
+文1文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig.txt 文2文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig_0.8_dis_10.txt
+
+2024-09-11 17:13:32
+ 两论文的查重率：1.00
+文1文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig.txt 文2文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig_0.8_dis_1.txt
+
+2024-09-11 17:13:42
+ 两论文的查重率：0.97
+文1文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig.txt 文2文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig_0.8_del.txt
+
+2024-09-11 17:13:55
+ 两论文的查重率：1.00
+文1文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig.txt 文2文件的绝对路径：E:\\2024_project\\plagiarism_check\\text\\orig_0.8_add.txt

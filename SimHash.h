@@ -20,26 +20,37 @@
 #include <bitset>
 #include <regex>
 
-
 class SimHash {
 private:
     // 存储每个词项及其权重和哈希值
     struct Term{
         std::string word;               // 词项
         int weight;                     // 词项的权重
+        //uint64_t hashValue[2];             // 词项的哈希值
         uint64_t hashValue;             // 词项的哈希值
         std::vector<int> weightedHash;  // 加权后的哈希值数组
 
         // Term构造函数，赋予词项初始哈希值，计算加权哈希值
         Term(std::string w, int weight) : word(w), weight(weight) {
-            hashValue = MurmurHash3_64(w);
+            /*MurmurHash3_64(w, hashValue);*/
+            hashValue = getWordHash(w);
             weightedHash.resize(64, 0);
+            /*int choice = 0;*/
             for (int i = 0; i < 64; ++i) {
-                if (hashValue & (1ULL << i)) {
+                /*if (i > 63) {
+                    choice = 1;
+                }
+                if (hashValue[choice] & (1ULL << i)) {
                     weightedHash[i] = 1 * weight;
                 }
                 else {
                     weightedHash[i] = (- 1) * weight;
+                }*/
+                if (hashValue & (1ULL << i)) {
+                    weightedHash[i] = 1 * weight;
+                }
+                else {
+                    weightedHash[i] = (-1) * weight;
                 }
             }
         }
@@ -48,33 +59,39 @@ private:
     std::vector<Term> terms;                                                                                // 存储所有特征的向量
     std::unordered_map<std::string, int> termFrequency;                                                     // 存储词频的哈希表
     std::unordered_set<std::string> stopWords = { "的", "是", "在", "有", "和", "了" ,"这","那" };          // 存储停用词的集合
+     
 
-    // 计算字符串的初始哈希值
-    static uint64_t MurmurHash3_64(const std::string& key) {
-        // 创建一个缓冲区来存储128位的哈希值结果
-        uint64_t result[2] = { 0 };
+    static uint64_t getWordHash(const std::string& word) {
+        // 定义常量，用于哈希计算
+        const uint64_t BIGINT_1000003 = 1000003;
+        const uint64_t BIGINT_2E64M1 = 0xFFFFFFFFFFFFFFFFull;
 
-        // 获取当前时间作为随机数生成器的种子
-        unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+        if (word.empty()) {
+            return 0;
+        }
 
-        // 调用MurmurHash3_x64_128函数来计算哈希值
-        MurmurHash3_x64_128(key.data(), static_cast<int>(key.size()), seed, result);
-
-        return result[0];
+        uint64_t hash = (static_cast<uint64_t>(word[0]) << 12); // 初始哈希值
+        for (char ch : word) {
+            uint64_t chInt = static_cast<uint64_t>(ch);
+            hash = (hash * BIGINT_1000003) ^ chInt;
+            hash &= BIGINT_2E64M1; // 保持哈希值在64位范围内
+        }
+        hash = hash ^ static_cast<uint64_t>(word.length());
+        return hash;
     }
 
 public:
 
     // 构造函数，接受一段文本，对其进行分词，并计算每个词的词频
     SimHash(const std::string& text) {
-        cppjieba::Jieba jieba("cppjieba-master/dict/jieba.dict.utf8", // 指定词典路径
-            "cppjieba-master/dict/hmm_model.utf8", // 指定HMM模型路径
-            "cppjieba-master/dict/user.dict.utf8", // 指定用户词典路径
-            "cppjieba-master/dict/idf.utf8", // 指定idf路径
-            "cppjieba-master/dict/stop_words.utf8"); // 指定停用词路径
+        cppjieba::Jieba jieba("dict/jieba.dict.utf8", // 指定词典路径
+            "dict/hmm_model.utf8", // 指定HMM模型路径
+            "dict/user.dict.utf8", // 指定用户词典路径
+            "dict/idf.utf8", // 指定idf路径
+            "dict/stop_words.utf8"); // 指定停用词路径
 
         std::vector<std::string> words;
-        jieba.Cut(text, words); // 使用cppjieba进行分词
+        jieba.Cut(text, words, true); // 使用cppjieba进行分词
 
         for (const std::string& word : words) {
             // 移除停用词和单字词
@@ -112,20 +129,20 @@ public:
     }
 
     // 根据两个SimHash值之间的汉明距离，计算相似度
-    static long CalculateSimilarity(const std::string& a, const std::string& b) {
+    static double CalculateSimilarity(const std::string& hash_a, const std::string& hash_b) {
         int distance = 0;
-        for (size_t i = 0; i < a.size(); ++i) {
+        for (size_t i = 0; i < hash_a.size(); ++i) {
             // 计算两个SimHash值之间的汉明距离
-            if (a[i] != b[i]) {
+            if (hash_a[i] != hash_b[i]) {
                 ++distance;
             }
         }
         // 计算相似度
-        long similarity = 0;
-        similarity = 1.0 - static_cast<long>(distance) / a.size();
+        double similarity = 0;
+        similarity = 1.0 - static_cast<double>(distance) / hash_a.size();
         return similarity;
     }
 };
 
 
-#endif _SIMHASH_H_
+#endif // _SIMHASH_H_

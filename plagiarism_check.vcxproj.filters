@@ -18,16 +18,29 @@
     <ClInclude Include="SimHash.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="MurmurHash3.h">
+    <ClInclude Include="Plagiarism_check.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="cppjieba-master\include\cppjieba\Jieba.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="resource1.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MurmurHash3.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cppjieba-master\dict\hmm_model.utf8" />
+    <None Include="cppjieba-master\dict\idf.utf8" />
+    <None Include="cppjieba-master\dict\jieba.dict.utf8" />
+    <None Include="cppjieba-master\dict\stop_words.utf8" />
+    <None Include="cppjieba-master\dict\user.dict.utf8" />
   </ItemGroup>
 </Project>
