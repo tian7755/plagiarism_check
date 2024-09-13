@@ -50,20 +50,29 @@ class LocalVector {
     }
   };
  public:
-  LocalVector<T>& operator = (const LocalVector<T>& vec) {
-    clear();
-    size_ = vec.size();
-    capacity_ = vec.capacity();
-    if(vec.buffer_ == vec.ptr_) {
-      memcpy(static_cast<void*>(buffer_), vec.buffer_, sizeof(T) * size_);
-      ptr_ = buffer_;
-    } else {
-      ptr_ = (T*) malloc(vec.capacity() * sizeof(T));
-      assert(ptr_);
-      memcpy(static_cast<void*>(ptr_), vec.ptr_, vec.size() * sizeof(T));
-    }
-    return *this;
-  }
+     LocalVector<T>& operator = (const LocalVector<T>& vec) {
+         clear();
+         size_ = vec.size();
+         capacity_ = vec.capacity();
+         if (vec.buffer_ == vec.ptr_) {
+             memcpy(static_cast<void*>(buffer_), vec.buffer_, sizeof(T) * size_);
+             ptr_ = buffer_;
+         }
+         else {
+             ptr_ = (T*)malloc(vec.capacity() * sizeof(T));
+             // 检查 malloc 是否成功分配内存
+             if (ptr_ == NULL) {
+                 // 处理内存分配失败的情况
+                 // 例如，可以设置 size_ 和 capacity_ 为 0，或者抛出异常
+                 size_ = 0;
+                 capacity_ = 0;
+                 // 如果不能恢复，可能需要抛出异常或执行其他错误处理
+                 throw std::bad_alloc();
+             }
+             memcpy(static_cast<void*>(ptr_), vec.ptr_, vec.size() * sizeof(T));
+         }
+         return *this;
+     }
  private:
   void init_() {
     ptr_ = buffer_;
@@ -90,6 +99,12 @@ class LocalVector {
     }
     T * next =  (T*)malloc(sizeof(T) * size);
     assert(next);
+    if (next == NULL) {
+        // 处理内存分配失败的情况
+        // 例如，可以抛出异常或返回
+        throw std::bad_alloc();
+        return;
+    }
     T * old = ptr_;
     ptr_ = next;
     memcpy(static_cast<void*>(ptr_), old, sizeof(T) * capacity_);

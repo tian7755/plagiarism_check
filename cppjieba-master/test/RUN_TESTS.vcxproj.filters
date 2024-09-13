@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="E:\2024_project\plagiarism_check\cppjieba-master\CMakeFiles\fb9d8be4aabe2de18f2668c5f1c4a74f\RUN_TESTS_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{B5287CB2-AAAC-34EF-9E67-3C01A8C7158C}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,5 +1,5 @@
-#ifndef CPPJIEBA_TRIE_HPP
-#define CPPJIEBA_TRIE_HPP
+#ifndef _CPPJIEBA_TRIE_HPP
+#define _CPPJIEBA_TRIE_HPP
 
 #include <vector>
 #include <queue>
@@ -14,27 +14,19 @@ namespace cppjieba {
 
     struct DictUnit {
         Unicode word;
-        double weight;
+        double weight = 0.0; 
         string tag;
-    }; // struct DictUnit
-
-    // for debugging
-    // inline ostream & operator << (ostream& os, const DictUnit& unit) {
-    //   string s;
-    //   s << unit.word;
-    //   return os << StringFormat("%s %s %.3lf", s.c_str(), unit.tag.c_str(), unit.weight);
-    // }
+    }; 
 
     struct Dag {
         RuneStr runestr;
-        // [offset, nexts.first]
         limonp::LocalVector<pair<size_t, const DictUnit*> > nexts;
         const DictUnit* pInfo;
         double weight;
-        size_t nextPos; // TODO
+        size_t nextPos; 
         Dag() :runestr(), pInfo(NULL), weight(0.0), nextPos(0) {
         }
-    }; // struct Dag
+    }; 
 
     typedef Rune TrieKey;
 
@@ -148,23 +140,17 @@ namespace cppjieba {
             if (key.begin() == key.end()) {
                 return;
             }
-            //定义一个NextMap迭代器
             TrieNode::NextMap::const_iterator kmIter;
-            //定义一个指向root的TrieNode指针
             TrieNode* ptNode = root_;
             for (Unicode::const_iterator citer = key.begin(); citer != key.end(); ++citer) {
-                //链表不存在元素
                 if (NULL == ptNode->next) {
                     return;
                 }
                 kmIter = ptNode->next->find(*citer);
-                //如果map中不存在,跳出循环
                 if (ptNode->next->end() == kmIter) {
                     break;
                 }
-                //从unordered_map中擦除该项
                 ptNode->next->erase(*citer);
-                //删除该node
                 ptNode = kmIter->second;
                 delete ptNode;
                 break;
@@ -197,7 +183,7 @@ namespace cppjieba {
         }
 
         TrieNode* root_;
-    }; // class Trie
-} // namespace cppjieba
+    }; 
+} 
 
-#endif // CPPJIEBA_TRIE_HPP
+#endif // _CPPJIEBA_TRIE_HPP

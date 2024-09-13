@@ -134,6 +134,11 @@ class HMMSegment: public SegmentBase {
     size_t X = end - begin;
 
     size_t XYSize = X * Y;
+    // 检查 XYSize 是否超出 int 类型的范围
+    if (XYSize > static_cast<size_t>(std::numeric_limits<int>::max())) {
+        // 处理错误情况，因为索引可能超出 int 的范围
+        throw std::overflow_error("Index exceeds the range of int.");
+    }
     size_t now, old, stat;
     double tmp, endE, endS;
 
@@ -159,7 +164,13 @@ class HMMSegment: public SegmentBase {
           tmp = weight[old] + model_->transProb[preY][y] + emitProb;
           if (tmp > weight[now]) {
             weight[now] = tmp;
-            path[now] = preY;
+            if (preY > static_cast<size_t>(std::numeric_limits<int>::max())) {
+                // 处理错误情况
+            }
+            else {
+                path[now] = static_cast<int>(preY);
+            }
+
           }
         }
       }
@@ -175,10 +186,17 @@ class HMMSegment: public SegmentBase {
     }
 
     status.resize(X);
-    for (int x = X -1 ; x >= 0; x--) {
-      status[x] = stat;
-      stat = path[x + stat*X];
+    if ((X - 1) > static_cast<size_t>(std::numeric_limits<int>::max())) {
+        // 处理错误情况
     }
+    else {
+        int a = static_cast<int> (X - 1); 
+        for (int x = a; x >= 0; x--) {
+            status[x] = stat;
+            stat = path[x + stat * X];
+        }
+    }
+   
   }
 
   const HMMModel* model_;

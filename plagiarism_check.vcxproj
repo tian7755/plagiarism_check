@@ -76,8 +76,10 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\cppjieba-master\include;.\cppjieba-master\deps\limonp\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\cppjieba-master\include;.\cppjieba-master\deps\limonp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -89,13 +91,14 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\cppjieba-master\include;.\cppjieba-master\deps\limonp\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\cppjieba-master\include;.\cppjieba-master\deps\limonp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -112,8 +115,10 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\cppjieba-master\include;.\cppjieba-master\deps\limonp\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\cppjieba-master\include;.\cppjieba-master\deps\limonp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -125,13 +130,14 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\cppjieba-master\include;.\cppjieba-master\deps\limonp\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\cppjieba-master\include;.\cppjieba-master\deps\limonp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -143,19 +149,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="cppjieba-master\include\cppjieba\Jieba.hpp">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </ClInclude>
-    <ClInclude Include="plagiarism_check.h" />
-    <ClInclude Include="simhash.h" />
+    <ClInclude Include="cppjieba-master\include\cppjieba\Jieba.hpp" />
+    <ClInclude Include="jenkins.h" />
+    <ClInclude Include="process.h" />
+    <ClInclude Include="plagiarism_checker.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="simhasher.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="plagiarism_check.cpp" />
-    <ClCompile Include="simhash.cpp" />
+    <ClCompile Include="plagiarism_checker.cpp" />
+    <ClCompile Include="simhasher.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cppjieba-master\dict\hmm_model.utf8" />
@@ -163,8 +170,17 @@
     <None Include="cppjieba-master\dict\jieba.dict.utf8" />
     <None Include="cppjieba-master\dict\stop_words.utf8" />
     <None Include="cppjieba-master\dict\user.dict.utf8" />
+    <None Include="packages.config" />
+    <None Include="utf81.bin" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\OpenCover.4.7.1221\build\OpenCover.targets" Condition="Exists('packages\OpenCover.4.7.1221\build\OpenCover.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\OpenCover.4.7.1221\build\OpenCover.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\OpenCover.4.7.1221\build\OpenCover.targets'))" />
+  </Target>
 </Project>

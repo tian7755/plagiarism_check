@@ -15,13 +15,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="simhash.h">
+    <ClInclude Include="simhasher.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="plagiarism_check.h">
+    <ClInclude Include="plagiarism_checker.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="jenkins.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="cppjieba-master\include\cppjieba\Jieba.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="process.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -29,18 +38,27 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="simhash.cpp">
+    <ClCompile Include="simhasher.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="plagiarism_check.cpp">
+    <ClCompile Include="plagiarism_checker.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ResourceCompile Include="Resource.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="utf81.bin">
+      <Filter>资源文件</Filter>
+    </None>
     <None Include="cppjieba-master\dict\hmm_model.utf8" />
     <None Include="cppjieba-master\dict\idf.utf8" />
     <None Include="cppjieba-master\dict\jieba.dict.utf8" />
     <None Include="cppjieba-master\dict\stop_words.utf8" />
     <None Include="cppjieba-master\dict\user.dict.utf8" />
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
