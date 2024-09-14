@@ -1,1 +1,2 @@
 *.diagsession filter=lfs diff=lfs merge=lfs -text
+性能分析资料/报告.diagsession filter=lfs diff=lfs merge=lfs -text
