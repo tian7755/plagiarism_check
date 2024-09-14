@@ -1,55 +1,60 @@
 #include "simhasher.h"
 
+using std::min;
 using std::cout;
 using std::endl;
 using std::cerr;
 using std::vector;
 using std::string;
+using std::ifstream;
+using std::exception;
 using std::runtime_error;
 using std::unordered_map;
 using std::unordered_set;
 
-Simhasher::Simhasher(const string& text) {
-    vector<string> words;
+Simhasher::Simhasher(const string& text, bool test_signal) {
+    if (test_signal != true) {
+        vector<string> words;
 
-    // 加载停用词
-    loadStopWords("dict/stop_words.utf8");
+        // 加载停用词
+        loadStopWords("dict/stop_words.utf8");
 
-    try {
-        // 使用cppjieba分词工具进行分词
-        cppjieba::Jieba jieba(
-            "dict/jieba.dict.utf8",                             // 指定词典路径
-            "dict/hmm_model.utf8",                              // 指定HMM模型路径
-            "dict/user.dict.utf8",                              // 指定用户词典路径
-            "dict/idf.utf8",                                    // 指定idf路径
-            "dict/stop_words.utf8");                            // 指定停用词路径
-        jieba.Cut(text, words, true);
+        try {
+            // 使用cppjieba分词工具进行分词
+            cppjieba::Jieba jieba(
+                "dict/jieba.dict.utf8",                             // 指定词典路径
+                "dict/hmm_model.utf8",                              // 指定HMM模型路径
+                "dict/user.dict.utf8",                              // 指定用户词典路径
+                "dict/idf.utf8",                                    // 指定idf路径
+                "dict/stop_words.utf8");                            // 指定停用词路径
+            jieba.Cut(text, words, true);
 
-        // 检查分词结果是否为空
-        if (words.empty()) {
-            throw runtime_error("分词结果为空");
+            // 检查分词结果是否为空
+            if (words.empty()) {
+                throw runtime_error("分词结果为空");
+            }
         }
-    }
-    catch (const std::exception& e) {
-        cerr << "使用cppjieba分词时的错误信息: " << e.what() << endl;
-        throw;
-    }
-
-    // 移除停用词和单字词，并统计词频
-    for (const string& word : words) {
-        if (word.length() > 1 && _stop_words.find(word) == _stop_words.end()) {
-            _term_frequency[word]++;
+        catch (const exception& e) {
+            cerr << "使用cppjieba分词时的错误信息: " << e.what() << endl;
+            throw;
         }
-    }
 
-    // 运用TF-IDF算法计算每个词项的权重
-    double total_terms = static_cast<double>(_term_frequency.size());
-    for (auto& pair : _term_frequency) {
-        double tf = pair.second;
-        double idf = log((1.0 + 1.0) / (1.0 + tf));
-        int weight = static_cast<int>(tf * idf);
-        // 将词项及其权重添加到特征向量中
-        _terms.emplace_back(pair.first, weight);
+        // 移除停用词和单字词，并统计词频
+        for (const string& word : words) {
+            if (word.length() > 1 && _stop_words.find(word) == _stop_words.end()) {
+                _term_frequency[word]++;
+            }
+        }
+
+        // 运用TF-IDF算法计算每个词项的权重
+        double total_terms = static_cast<double>(_term_frequency.size());
+        for (auto& pair : _term_frequency) {
+            double tf = pair.second;
+            double idf = log((1.0 + 1.0) / (1.0 + tf));
+            int weight = static_cast<int>(tf * idf);
+            // 将词项及其权重添加到特征向量中
+            _terms.emplace_back(pair.first, weight);
+        }
     }
 }
 
@@ -73,12 +78,14 @@ string Simhasher::calculateSimHash() {
 
 double Simhasher::calculateSimilarity(const string& hash_orig, const string& hash_copy) {
     int distance = 0;
+    size_t simhash_length = hash_orig.size();
     double similarity = 0;
     unsigned int xor_value = 0;
 
     if (hash_orig.size() != hash_copy.size()) {
-        // 如果两个字符串长度不同，则无法计算汉明距离
-        throw std::invalid_argument("两个文本的Simhash值的长度不一。");
+        // 如果两个字符串长度不同，则说明情况
+        size_t simhash_length = min(hash_orig.size(), hash_copy.size());
+        cout << "两个文本的Simhash值的长度不一,以下汉明距离将使用前" << simhash_length << "位的simhash值计算" << endl;
     }
     // 统计两个Simhash值的汉明距离
     for (size_t i = 0; i < hash_orig.size(); ++i) {
@@ -91,6 +98,10 @@ double Simhasher::calculateSimilarity(const string& hash_orig, const string& has
     similarity = 1.0 - static_cast<double>(distance) / hash_orig.size();
     return similarity;
 }
+
+void Simhasher::testloadStopWords(const std::string& filePath) {
+    loadStopWords(filePath);
+};
 
 Simhasher::_Term::_Term(string w, int weight) : word(w), weight(weight) {
     // 赋初始哈希值
@@ -109,15 +120,18 @@ Simhasher::_Term::_Term(string w, int weight) : word(w), weight(weight) {
     }
 }
 
-void Simhasher::loadStopWords(const std::string& filePath) {
+void Simhasher::loadStopWords(const string& filePath) {
     try {
-        std::ifstream file(filePath);
+        ifstream file(filePath);
         if (!file.is_open()) {
-            throw std::runtime_error("无法打开停用词文件: " + filePath);
+            cout << "无法以下路径的打开停用词文件: " << filePath << "将使用初始100字停用词集合作为停用词词典" << endl;
+            _stop_words = { "的","了","是","我","不","在","人","有","这","中","大","为","上","个","也","他","而","和","你","就","来","到","说","要","着","好","能","她","们","它","对","下","去","与","等","如","年","会","从","之","把","时","道","自","或","做","给","还","此","又","何" ,
+    "a","an","the","and","but","or","nor","for","yet","so","of","to","in","on","at","by","with","about","against","between","into","through","during","before","after","above","below","up","down","under","over","again","further","then","once","here","there","when","where","why","how","all","any","both","each","few","more","most","no","nor","some","such","than","too","very","s","t","can","will" };
+            return ; 
         }
 
-        std::string line;
-        while (std::getline(file, line)) {
+        string line;
+        while (getline(file, line)) {
             // 手动清除字符串中的空白字符
             auto it = line.begin();
             while (it != line.end()) {
@@ -135,13 +149,15 @@ void Simhasher::loadStopWords(const std::string& filePath) {
 
         // 检查停用词词典是否为空
         if (_stop_words.empty()) {
-            throw runtime_error("停用词词典为空");
+            cout << "停用词词典为空, 将使用初始100字停用词集合作为停用词词典" << endl;
+            _stop_words = { "的","了","是","我","不","在","人","有","这","中","大","为","上","个","也","他","而","和","你","就","来","到","说","要","着","好","能","她","们","它","对","下","去","与","等","如","年","会","从","之","把","时","道","自","或","做","给","还","此","又","何" ,
+    "a","an","the","and","but","or","nor","for","yet","so","of","to","in","on","at","by","with","about","against","between","into","through","during","before","after","above","below","up","down","under","over","again","further","then","once","here","there","when","where","why","how","all","any","both","each","few","more","most","no","nor","some","such","than","too","very","s","t","can","will" };
+            return ;
         }
-
     }
-    catch (const std::exception& e) {
+    catch (const exception& e) {
         // 捕获并打印异常信息
-        cerr << "读取文件时发生错误: " << e.what() << endl;
+        cerr << "加载停用词词典时发生错误: " << e.what() << endl;
         throw;
     }
 }

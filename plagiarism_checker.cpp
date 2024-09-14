@@ -26,8 +26,8 @@ void PlagiarismChecker::checkPlagiarism() {
         string original_text = readFile(_orig_path);// 此前构造了一个查重类
         string copied_text = readFile(_copy_path);
 
-        Simhasher simhash1(original_text);
-        Simhasher simhash2(copied_text);
+        Simhasher simhash1(original_text, false);
+        Simhasher simhash2(copied_text, false);
 
         // 计算两个论文的Simhash值
         string hash1 = simhash1.calculateSimHash();

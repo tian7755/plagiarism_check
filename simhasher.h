@@ -22,13 +22,16 @@ class Simhasher
 {
 public:
     // 构造函数，接受一段文本，对其进行分词，并根据每个词的词频计算其权重
-    Simhasher(const std::string& text);
+    Simhasher(const std::string& text, bool test_signal);
 
     // 完成合并和降维过程，得出文本的Simhash值
     std::string calculateSimHash();
 
     // 统计两个Simhash值的汉明距离，并得出论文重复率
     static double calculateSimilarity(const std::string& hash_orig, const std::string& hash_copy);
+
+    // 公共接口用于测试
+    void testloadStopWords(const std::string& filePath);
 
 private:
     // 存储分词后的每个词项及其权重和哈希值
@@ -46,7 +49,6 @@ private:
     std::vector<_Term> _terms;                                                                                // 文本所有的词项
     std::unordered_map<std::string, int> _term_frequency;                                                     // 存储所有词项对应的词频的哈希表
     std::unordered_set<std::string> _stop_words;                                                              // 停用词的集合
-
     // 从停用词词典中加载停用词
     void loadStopWords(const std::string& filePath);
 };
